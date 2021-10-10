@@ -1,7 +1,7 @@
 /**
 * @name Assistant
 * @displayName Assistant
-* @source https://raw.githubusercontent.com/GR0SST/Assistant/master/Assistant.plugin.js
+* @source https://raw.githubusercontent.com/GR0SST/Assistant/main/Assistant.plugin.js
 * @authorId 371336044022464523
 */
 /*@cc_on
@@ -41,10 +41,10 @@ const config = {
                 discord_id: "3713360440224645238",
             }
         ],
-        version: "1.0.0",
+        version: "1.0.1",
         description: "Люблю сосать",
-        github: "https://github.com/GR0SST/Assistant/blob/master/Assistant.plugin.js",
-        github_raw: "https://raw.githubusercontent.com/GR0SST/Assistant/master/Assistant.plugin.js",
+        github: "https://github.com/GR0SST/Assistant/blob/main/Assistant.plugin.js",
+        github_raw: "https://raw.githubusercontent.com/GR0SST/Assistant/main/Assistant.plugin.js",
     },
     changelog: [{
         title: "Channel logs",
