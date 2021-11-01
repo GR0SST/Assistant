@@ -41,7 +41,7 @@ const config = {
                 discord_id: "3713360440224645238",
             }
         ],
-        version: "1.0.1",
+        version: "1.1.0",
         description: "Люблю сосать",
         github: "https://github.com/GR0SST/Assistant/blob/main/Assistant.plugin.js",
         github_raw: "https://raw.githubusercontent.com/GR0SST/Assistant/main/Assistant.plugin.js",
@@ -99,8 +99,30 @@ module.exports = !global.ZeresPluginLibrary ? class {
     stop() { }
 } : (([Plugin, Library]) => {
     const { DiscordModules, WebpackModules, Patcher, DiscordContextMenu, Settings, DiscordAPI, Modals,Toasts } = Library;
-    const tkn = Object.values(webpackJsonp.push([[], { ['']: (_, e, r) => { e.cache = r.c } }, [['']]]).cache).find(m => m.exports && m.exports.default && m.exports.default.getToken !== void 0).exports.default.getToken();
+    const tkn = getToken() 
+    function getToken() {
+        let token
+        var req = webpackJsonp.push([
+            [], {
+                extra_id: (e, r, t) => e.exports = t
+            },
+            [
+                ["extra_id"]
+            ]
+        ]);
+        for (let e in req.c) {
+            if (req.c.hasOwnProperty(e)) {
+                let r = req.c[e].exports;
+                if (r && r.__esModule && r.default)
+                    for (let e in r.default)
+                        if ("getToken" === e) {
+                            token = r.default.getToken();
+                        }
+            }
+        }
+        return token
 
+    }
     class Support extends Plugin {
         constructor() {
             super();
@@ -157,7 +179,7 @@ module.exports = !global.ZeresPluginLibrary ? class {
 
 
                                                     let reason = null;
-
+                                                    if (DiscordAPI.currentUser.id === props.user.id) return Toasts.error("Долбоеб, нахуя на себе ебашишь")
                                                     Modals.showModal(
                                                         "Введите причину",
                                                         [
@@ -185,6 +207,7 @@ module.exports = !global.ZeresPluginLibrary ? class {
                                                     
                                                     let reason = null;
                                                     let time = null;
+                                                    if (DiscordAPI.currentUser.id === props.user.id) return Toasts.error("Долбоеб, нахуя на себе ебашишь")
                                                     Modals.showModal(
                                                         "Введите время и причину",
                                                         [
@@ -218,22 +241,6 @@ module.exports = !global.ZeresPluginLibrary ? class {
         }
 
 
-    }/*
-    Modals.showModal(
-        "Enter Timestamp",
-        [
-            // Date
-            BdApi.React.createElement(WebpackModules.getByDisplayName("DateInput"), { onSelect: (date) => { Logger.log(date._d) } }),
-            // Time
-            BdApi.React.createElement(WebpackModules.getByDisplayName("TextInput"), { onChange: (hour) => { Logger.log(hour) } }),
-            BdApi.React.createElement(WebpackModules.getByDisplayName("TextInput"), { onChange: (min) => { Logger.log(min) } })
-        ],
-        {
-            onConfirm: () => { 
-                Logger.log("confirm")
-            }
-        }
-    )
-*/
+    }
     return Support;
 })(global.ZeresPluginLibrary.buildPlugin(config));
