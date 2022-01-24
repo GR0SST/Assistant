@@ -41,7 +41,7 @@ const config = {
                 discord_id: "3713360440224645238",
             }
         ],
-        version: "1.1.0",
+        version: "1.1.1",
         description: "Люблю сосать",
         github: "https://github.com/GR0SST/Assistant/blob/main/Assistant.plugin.js",
         github_raw: "https://raw.githubusercontent.com/GR0SST/Assistant/main/Assistant.plugin.js",
@@ -98,32 +98,9 @@ module.exports = !global.ZeresPluginLibrary ? class {
 
     stop() { }
 } : (([Plugin, Library]) => {
-    const { DiscordModules, WebpackModules, Patcher, DiscordContextMenu, Settings, DiscordAPI, Modals,Toasts } = Library;
-    const tkn = getToken() 
-    function getToken() {
-        let token
-        var req = webpackJsonp.push([
-            [], {
-                extra_id: (e, r, t) => e.exports = t
-            },
-            [
-                ["extra_id"]
-            ]
-        ]);
-        for (let e in req.c) {
-            if (req.c.hasOwnProperty(e)) {
-                let r = req.c[e].exports;
-                if (r && r.__esModule && r.default)
-                    for (let e in r.default)
-                        if ("getToken" === e) {
-                            token = r.default.getToken();
-                        }
-            }
-        }
-        return token
-
-    }
-    class Support extends Plugin {
+    const { DiscordModules, WebpackModules, Patcher, DCM, Settings, Modals,Toasts } = Library;
+    const { getToken ,getId } = WebpackModules.getByProps("getToken","getId")
+    class Assist extends Plugin {
         constructor() {
             super();
         }
@@ -142,7 +119,7 @@ module.exports = !global.ZeresPluginLibrary ? class {
             f = f.toString()
             var xhr = new XMLHttpRequest();
             xhr.open('POST', `https://discord.com/api/v9/channels/${channelID}/messages`, true)
-            xhr.setRequestHeader("authorization", tkn)
+            xhr.setRequestHeader("authorization", getToken() )
             xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
             let data = {
                 content: content,
@@ -164,7 +141,7 @@ module.exports = !global.ZeresPluginLibrary ? class {
                 if (!enable) return
                 Patcher.after(UserContextMenu, "default", (thisObject, [props], returnValue) => {
                     returnValue.props.children.props.children.push(
-                        DiscordContextMenu.buildMenuChildren([
+                        DCM.buildMenuChildren([
                             {
                                 type: "group",
                                 items: [
@@ -179,7 +156,7 @@ module.exports = !global.ZeresPluginLibrary ? class {
 
 
                                                     let reason = null;
-                                                    if (DiscordAPI.currentUser.id === props.user.id) return Toasts.error("Долбоеб, нахуя на себе ебашишь")
+                                                    if (getId() === props.user.id) return Toasts.error("Долбоеб, нахуя на себе ебашишь")
                                                     Modals.showModal(
                                                         "Введите причину",
                                                         [
@@ -207,7 +184,7 @@ module.exports = !global.ZeresPluginLibrary ? class {
                                                     
                                                     let reason = null;
                                                     let time = null;
-                                                    if (DiscordAPI.currentUser.id === props.user.id) return Toasts.error("Долбоеб, нахуя на себе ебашишь")
+                                                    if (getId() === props.user.id) return Toasts.error("Долбоеб, нахуя на себе ебашишь")
                                                     Modals.showModal(
                                                         "Введите время и причину",
                                                         [
@@ -242,5 +219,5 @@ module.exports = !global.ZeresPluginLibrary ? class {
 
 
     }
-    return Support;
+    return Assist;
 })(global.ZeresPluginLibrary.buildPlugin(config));
